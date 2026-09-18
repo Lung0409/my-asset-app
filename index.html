@@ -93,31 +93,32 @@ function saveFI(){db.target=+target.value||15000000;db.spend=+spend.value||60000
 function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='我的資產備份.json';a.click()}
 
 async function getTWSE(){
- const r=await fetch('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL',{cache:'no-store'});
- if(!r.ok)throw new Error('TWSE行情連線失敗');
+ const r=await fetch('./market.json?ts='+Date.now(),{cache:'no-store'});
+ if(!r.ok)throw new Error('網站行情資料尚未更新');
  return await r.json();
 }
 async function getDividends(){
- const r=await fetch('https://openapi.twse.com.tw/v1/opendata/t187ap45_L',{cache:'no-store'});
- if(!r.ok)throw new Error('TWSE股利資料連線失敗');
+ const r=await fetch('./dividends.json?ts='+Date.now(),{cache:'no-store'});
+ if(!r.ok)throw new Error('網站股利資料尚未更新');
  return await r.json();
 }
 function normalizeCode(x){return String(x||'').trim().toUpperCase()}
 async function syncOne(i){
  const h=db.h[i]; if(!h)return;
- syncStatus.textContent='正在同步 '+h.code+'…';
+ syncStatus.textContent='正在讀取 '+h.code+' 最新資料…';
  try{
-   const rows=await getTWSE(); const row=rows.find(r=>normalizeCode(r.Code||r['證券代號'])===normalizeCode(h.code));
-   if(!row)throw new Error('找不到上市代號，若為上櫃股票目前版本尚未支援');
+   const rows=await getTWSE();
+   const row=rows.find(r=>normalizeCode(r.Code||r['證券代號'])===normalizeCode(h.code));
+   if(!row)throw new Error('找不到上市代號；目前先支援上市股票/ETF');
    const p=parseFloat(String(row.ClosingPrice??row['收盤價']??'').replace(/,/g,''));
-   if(!isFinite(p)||p<=0)throw new Error('今日沒有有效收盤價');
+   if(!isFinite(p)||p<=0)throw new Error('目前沒有有效收盤價');
    h.price=p;h.name=h.name||row.Name||row['證券名稱']||'';h.updated='自動 '+new Date().toLocaleString('zh-TW');
    save();syncStatus.textContent=h.code+' 已更新：'+p;
  }catch(e){syncStatus.textContent='同步失敗：'+e.message}
 }
 async function syncAll(){
  if(!db.h.length){alert('請先到「投資」新增至少一檔台股。');return}
- syncStatus.textContent='正在抓取臺股最新收盤價與股利資料…';
+ syncStatus.textContent='正在讀取最新行情與股利…';
  try{
    const [rows,divs]=await Promise.all([getTWSE(),getDividends()]);
    let updated=0,divUpdated=0;
@@ -133,9 +134,9 @@ async function syncAll(){
        mine.sort((a,b)=>String(b['股利年度']||'').localeCompare(String(a['股利年度']||'')));
        const d=mine.find(x=>parseFloat(x['股東配發-盈餘分配之現金股利(元/股)']||0)+parseFloat(x['股東配發-資本公積發放之現金(元/股)']||0)>0);
        if(d){
-         const ps=(parseFloat(d['股東配發-盈餘分配之現金股利(元/股)']||0)+parseFloat(d['股東配發-資本公積發放之現金(元/股)']||0));
+         const ps=parseFloat(d['股東配發-盈餘分配之現金股利(元/股)']||0)+parseFloat(d['股東配發-資本公積發放之現金(元/股)']||0);
          const amount=(+h.shares||0)*ps;
-         const year='20'+String(d['股利年度']||'').slice(-2);
+         const year=String(d['股利年度']||'');
          const key=h.code+'-'+year+'-'+ps;
          if(amount>0 && !db.d.some(x=>x.autoKey===key)){
            db.d.push({code:h.code,name:h.name,date:new Date().toISOString().slice(0,10),amount,shares:+h.shares||0,ps,auto:true,autoKey:key});
@@ -145,9 +146,10 @@ async function syncAll(){
      }
    }
    localStorage.setItem(K,JSON.stringify(db));render();
-   syncStatus.textContent=`完成：股價 ${updated} 檔｜股利 ${divUpdated} 筆｜${new Date().toLocaleString('zh-TW')}`;
- }catch(e){syncStatus.textContent='同步失敗：'+e.message+'。如果是 Safari 阻擋跨網域請求，下一版會改成伺服器代理。'}
+   syncStatus.textContent=`完成：股價 ${updated} 檔｜股利 ${divUpdated} 筆`;
+ }catch(e){syncStatus.textContent='同步失敗：'+e.message}
 }
+
 render();
 </script>
 </body>
