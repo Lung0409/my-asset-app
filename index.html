@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>我的資產</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f6fa;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif}
+header{background:#0f172a;color:#fff;padding:24px 16px}.wrap{max-width:720px;margin:auto;padding:14px 14px 90px}
+.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 18px #0001}.big{font-size:32px;font-weight:800}.muted{font-size:12px;color:#64748b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{background:#f8fafc;padding:13px;border-radius:14px}.tile b{display:block;font-size:19px;margin-top:5px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.item{padding:13px 0;border-bottom:1px solid #eee}.pos{color:#059669}.neg{color:#dc2626}
+button{border:0;border-radius:10px;padding:10px 13px;font-weight:700}.blue{background:#2563eb;color:white}.soft{background:#eef2ff;color:#3730a3}.red{background:#fee2e2;color:#991b1b}.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:5}.tabs button{background:none;color:#64748b;font-size:11px}.tabs .on{color:#2563eb}.page{display:none}.page.on{display:block}
+.modal{position:fixed;inset:0;background:#0008;z-index:9;padding:18px;overflow:auto}.sheet{background:#fff;border-radius:20px;padding:17px;max-width:600px;margin:30px auto}input{width:100%;padding:11px;border:1px solid #d8dee8;border-radius:10px;font-size:15px;margin:5px 0 10px}label{font-size:12px;color:#64748b;display:block}.empty{text-align:center;color:#94a3b8;padding:25px}
+</style>
+</head>
+<body>
+<header><h2 style="margin:0">我的資產</h2><small>投資・股息・淨資產・財富自由</small></header>
+<main class="wrap">
+<section id="home" class="page on">
+<div class="card"><div class="muted">淨資產</div><div class="big" id="net">NT$0</div><div class="muted" id="sub"></div></div>
+<div class="grid"><div class="tile"><span class="muted">股票市值</span><b id="sv">NT$0</b></div><div class="tile"><span class="muted">損益</span><b id="pnl">NT$0</b></div><div class="tile"><span class="muted">今年股息</span><b id="dy">NT$0</b></div><div class="tile"><span class="muted">FI進度</span><b id="fi">0%</b></div></div>
+<div class="card" style="margin-top:12px"><div class="row"><b>資產配置</b><span id="mix" class="muted"></span></div><div id="bar" style="margin-top:10px"></div></div>
+</section>
+<section id="invest" class="page"><div class="card"><div class="row"><b>投資組合</b><button class="blue" onclick="openH()">＋新增</button></div><div id="hold"></div></div></section>
+<section id="dividend" class="page"><div class="card"><div class="row"><b>股息</b><button class="blue" onclick="openD()">＋新增</button></div><div id="dlist"></div></div></section>
+<section id="assets" class="page"><div class="card"><div class="row"><b>其他資產</b><button class="blue" onclick="openA()">＋新增</button></div><div id="alist"></div></div><div class="card"><div class="row"><b>負債</b><button class="soft" onclick="openB()">＋新增</button></div><div id="blist"></div></div></section>
+<section id="analysis" class="page"><div class="card"><b>財務分析</b><div id="ana"></div></div><div class="card"><b>財富自由</b><label>FI目標<input id="target" type="number"></label><label>年支出<input id="spend" type="number"></label><button class="blue" onclick="saveFI()">儲存</button></div><div class="card"><b>備份</b><p class="muted">資料存在目前瀏覽器，可匯出 JSON 備份。</p><button class="soft" onclick="exportData()">匯出</button></div></section>
+</main>
+<nav class="tabs"><button class="on" onclick="go('home',this)">⌂<br>總覽</button><button onclick="go('invest',this)">▣<br>投資</button><button onclick="go('dividend',this)">＄<br>股息</button><button onclick="go('assets',this)">◫<br>資產</button><button onclick="go('analysis',this)">◔<br>分析</button></nav>
+<div id="modal" class="modal" style="display:none"><div class="sheet"><div class="row"><b id="mt">新增</b><button class="soft" onclick="closeM()">關閉</button></div><div id="form"></div></div></div>
+<script>
+const K='myasset';let db=JSON.parse(localStorage.getItem(K)||'null')||{h:[],d:[],a:[{name:'現金',value:0}],b:[],target:15000000,spend:600000};
+const M=x=>'NT$'+Math.round(+x||0).toLocaleString('zh-TW');
+function calc(){let s=db.h.reduce((a,x)=>a+x.shares*x.price,0),c=db.h.reduce((a,x)=>a+x.shares*x.cost,0),a=db.a.reduce((a,x)=>a+x.value,0),b=db.b.reduce((a,x)=>a+x.value,0);return{s,c,a,b,total:s+a,net:s+a-b,p:s-c}}
+function save(){localStorage.setItem(K,JSON.stringify(db));render()}
+function go(id,b){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on')}
+function render(){let c=calc(),y=new Date().getFullYear(),d=db.d.filter(x=>x.date.startsWith(y)).reduce((a,x)=>a+x.amount,0),pct=c.total?c.s/c.total*100:0;net.textContent=M(c.net);sub.textContent=`總資產 ${M(c.total)}　負債 ${M(c.b)}`;sv.textContent=M(c.s);pnl.textContent=(c.p>=0?'+':'-')+M(Math.abs(c.p));dy.textContent=M(d);fi.textContent=Math.min(100,c.net/db.target*100).toFixed(1)+'%';target.value=db.target;spend.value=db.spend;mix.textContent='股票 '+pct.toFixed(1)+'%';bar.innerHTML='<div style="height:9px;background:#e5e7eb;border-radius:9px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,pct)+'%;background:#2563eb"></i></div>';hold.innerHTML=db.h.length?db.h.map((x,i)=>{let v=x.shares*x.price,p=x.shares*(x.price-x.cost);return `<div class=item><div class=row><div><b>${x.code} ${x.name}</b><div class=muted>${x.shares}股｜成本 ${M(x.cost)}</div></div><b>${M(v)}</b></div><div class=row><span class=${p>=0?'pos':'neg'}>${p>=0?'+':'-'}${M(Math.abs(p))}</span><span class=muted>現價 ${x.price}</span></div><button class=soft onclick="price(${i})">更新價格</button> <button class=red onclick="del('h',${i})">刪除</button></div>`}).join(''):'<div class=empty>尚無持股</div>';dlist.innerHTML=db.d.length?db.d.slice().reverse().map(x=>`<div class=item><div class=row><b>${x.code} ${x.name}</b><b class=pos>+${M(x.amount)}</b></div><span class=muted>${x.date}｜每股 ${x.ps}｜股數 ${x.shares}</span></div>`).join(''):'<div class=empty>尚無股息</div>';alist.innerHTML=db.a.map((x,i)=>`<div class=item><div class=row><b>${x.name}</b><b>${M(x.value)}</b></div><button class=red onclick="del('a',${i})">刪除</button></div>`).join('');blist.innerHTML=db.b.map((x,i)=>`<div class=item><div class=row><b>${x.name}</b><b>${M(x.value)}</b></div><button class=red onclick="del('b',${i})">刪除</button></div>`).join('')||'<div class=empty>尚無負債</div>';ana.innerHTML=`<p>股票曝險：<b>${pct.toFixed(1)}%</b></p><p>負債比：<b>${(c.total?c.b/c.total*100:0).toFixed(1)}%</b></p><p>距離 FI：<b>${M(Math.max(db.target-c.net,0))}</b></p>`}
+function show(t,f){modal.style.display='block';mt.textContent=t;form.innerHTML=f}function closeM(){modal.style.display='none'}
+function openH(){show('新增持股',`<label>代號<input id=x1 placeholder=0050></label><label>名稱<input id=x2></label><label>股數<input id=x3 type=number></label><label>平均成本<input id=x4 type=number></label><label>目前價格<input id=x5 type=number></label><button class=blue onclick=addH()>儲存</button>`)}
+function openD(){show('新增股息',`<label>代號<input id=x1></label><label>名稱<input id=x2></label><label>日期<input id=x3 type=date></label><label>股息金額<input id=x4 type=number></label><label>股數<input id=x5 type=number></label><label>每股股息<input id=x6 type=number></label><button class=blue onclick=addD()>儲存</button>`)}
+function openA(){show('新增資產',`<label>名稱<input id=x1></label><label>金額<input id=x2 type=number></label><button class=blue onclick=addA()>儲存</button>`)}
+function openB(){show('新增負債',`<label>名稱<input id=x1></label><label>餘額<input id=x2 type=number></label><button class=blue onclick=addB()>儲存</button>`)}
+function addH(){db.h.push({code:x1.value,name:x2.value,shares:+x3.value,cost:+x4.value,price:+x5.value});closeM();save()}function addD(){db.d.push({code:x1.value,name:x2.value,date:x3.value,amount:+x4.value,shares:+x5.value,ps:+x6.value});closeM();save()}function addA(){db.a.push({name:x1.value,value:+x2.value});closeM();save()}function addB(){db.b.push({name:x1.value,value:+x2.value});closeM();save()}function del(k,i){db[k].splice(i,1);save()}function price(i){let v=prompt('輸入目前價格',db.h[i].price);if(v!==null&&!isNaN(v)){db.h[i].price=+v;save()}}function saveFI(){db.target=+target.value||15000000;db.spend=+spend.value||600000;save();alert('已儲存')}function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='我的資產備份.json';a.click()}render();
+</script>
+</body></html>
