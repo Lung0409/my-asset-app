@@ -4,37 +4,58 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<title>我的資產</title>
+<title>我的資產 V3</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f4f6fa;color:#172033;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif}
-header{background:#0f172a;color:#fff;padding:24px 16px}.wrap{max-width:720px;margin:auto;padding:14px 14px 95px}
-.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 18px #0001}.big{font-size:32px;font-weight:800}.muted{font-size:12px;color:#64748b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tile{background:#f8fafc;padding:13px;border-radius:14px}.tile b{display:block;font-size:19px;margin-top:5px}.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.item{padding:13px 0;border-bottom:1px solid #eee}.pos{color:#059669}.neg{color:#dc2626}
-button{border:0;border-radius:10px;padding:10px 13px;font-weight:700}.blue{background:#2563eb;color:white}.soft{background:#eef2ff;color:#3730a3}.red{background:#fee2e2;color:#991b1b}.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:5}.tabs button{background:none;color:#64748b;font-size:11px}.tabs .on{color:#2563eb}.page{display:none}.page.on{display:block}
-.modal{position:fixed;inset:0;background:#0008;z-index:9;padding:18px;overflow:auto}.sheet{background:#fff;border-radius:20px;padding:17px;max-width:600px;margin:30px auto}input{width:100%;padding:11px;border:1px solid #d8dee8;border-radius:10px;font-size:15px;margin:5px 0 10px}label{font-size:12px;color:#64748b;display:block}.empty{text-align:center;color:#94a3b8;padding:25px}.status{padding:10px 12px;border-radius:12px;background:#f1f5f9;font-size:12px;margin-top:10px}.smallbtn{padding:7px 9px;font-size:12px}.source{font-size:11px;color:#64748b;margin-top:8px}
+header{background:#0f172a;color:#fff;padding:22px 16px}.wrap{max-width:760px;margin:auto;padding:14px 14px 95px}
+.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 4px 18px #0001}
+.big{font-size:31px;font-weight:800}.muted{font-size:12px;color:#64748b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:#f8fafc;padding:13px;border-radius:14px}.tile b{display:block;font-size:19px;margin-top:5px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}.item{padding:13px 0;border-bottom:1px solid #eee}
+.pos{color:#059669}.neg{color:#dc2626}.blue{background:#2563eb;color:#fff}.soft{background:#eef2ff;color:#3730a3}.red{background:#fee2e2;color:#991b1b}
+button{border:0;border-radius:10px;padding:10px 13px;font-weight:700}.small{padding:7px 9px;font-size:12px}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:5}
+.tabs button{background:none;color:#64748b;font-size:11px}.tabs .on{color:#2563eb}.page{display:none}.page.on{display:block}
+.modal{position:fixed;inset:0;background:#0008;z-index:9;padding:18px;overflow:auto}.sheet{background:#fff;border-radius:20px;padding:17px;max-width:600px;margin:30px auto}
+input,select{width:100%;padding:11px;border:1px solid #d8dee8;border-radius:10px;font-size:15px;margin:5px 0 10px}
+label{font-size:12px;color:#64748b;display:block}.empty{text-align:center;color:#94a3b8;padding:25px}.status{padding:10px 12px;border-radius:12px;background:#f1f5f9;font-size:12px;margin-top:10px}
+.bar{height:10px;background:#e5e7eb;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:#2563eb}
+.badge{background:#e0ecff;color:#2563eb;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700}
 </style>
 </head>
 <body>
-<header><h2 style="margin:0">我的資產</h2><small>投資・股息・淨資產・財富自由</small></header>
+<header><h2 style="margin:0">我的資產</h2><small>投資・股息・淨資產・財富自由 V3</small></header>
 <main class="wrap">
+
 <section id="home" class="page on">
 <div class="card"><div class="muted">淨資產</div><div class="big" id="net">NT$0</div><div class="muted" id="sub"></div></div>
 <div class="grid">
 <div class="tile"><span class="muted">股票市值</span><b id="sv">NT$0</b></div>
-<div class="tile"><span class="muted">損益</span><b id="pnl">NT$0</b></div>
+<div class="tile"><span class="muted">未實現損益</span><b id="pnl">NT$0</b></div>
 <div class="tile"><span class="muted">今年股息</span><b id="dy">NT$0</b></div>
 <div class="tile"><span class="muted">FI進度</span><b id="fi">0%</b></div>
 </div>
-<div class="card" style="margin-top:12px"><div class="row"><b>資產配置</b><span id="mix" class="muted"></span></div><div id="bar" style="margin-top:10px"></div></div>
-<div class="card"><div class="row"><b>行情同步</b><button class="blue" onclick="syncAll()">↻ 同步</button></div><div id="syncStatus" class="status">尚未同步</div><div class="source">股價：臺灣證券交易所 OpenAPI；股利：證交所上市公司股利分派資料。</div></div>
+<div class="card"><div class="row"><b>資產配置</b><span id="mix" class="muted"></span></div><div id="bar" style="margin-top:10px"></div></div>
+
+<div class="card">
+<div class="row"><b>行情同步</b><button class="blue" onclick="syncAll()">↻ 同步</button></div>
+<div id="syncStatus" class="status">尚未同步</div>
+<div class="muted" style="margin-top:8px">台股、美股與 USD/TWD 匯率由 GitHub Actions 定期更新資料檔；你的持股資料只存在本機瀏覽器。</div>
+</div>
 </section>
 
 <section id="invest" class="page">
-<div class="card"><div class="row"><b>投資組合</b><button class="blue" onclick="openH()">＋新增</button></div>
-<div class="muted" style="margin-top:8px">輸入台股代號後，可用「同步」自動更新最新收盤價。</div>
-<div id="hold"></div></div>
+<div class="card">
+<div class="row"><b>投資組合</b><button class="blue" onclick="document.getElementById('importFile').click()">匯入庫存</button></div>
+<div class="row" style="margin-top:8px"><span class="muted" id="count"></span><span class="badge" id="fxbadge">USD/TWD --</span></div>
+<input id="importFile" type="file" accept=".json,.csv" style="display:none" onchange="importHoldings(this.files[0])">
+<div id="hold"></div>
+</div>
 </section>
 
-<section id="dividend" class="page"><div class="card"><div class="row"><b>股息紀錄</b><button class="blue" onclick="openD()">＋新增</button></div><div id="dlist"></div></div></section>
+<section id="dividend" class="page">
+<div class="card"><div class="row"><b>股息紀錄</b><button class="blue" onclick="openD()">＋新增</button></div><div id="dlist"></div></div>
+</section>
 
 <section id="assets" class="page">
 <div class="card"><div class="row"><b>其他資產</b><button class="blue" onclick="openA()">＋新增</button></div><div id="alist"></div></div>
@@ -43,8 +64,14 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:700}.blue{backg
 
 <section id="analysis" class="page">
 <div class="card"><b>財務分析</b><div id="ana"></div></div>
-<div class="card"><b>財富自由</b><label>FI目標<input id="target" type="number"></label><label>年支出<input id="spend" type="number"></label><button class="blue" onclick="saveFI()">儲存</button></div>
-<div class="card"><b>備份</b><p class="muted">資料存在目前瀏覽器，可匯出 JSON 備份。</p><button class="soft" onclick="exportData()">匯出</button></div>
+<div class="card"><b>財富自由</b>
+<label>FI目標<input id="target" type="number"></label>
+<label>年支出<input id="spend" type="number"></label>
+<button class="blue" onclick="saveFI()">儲存</button>
+</div>
+<div class="card"><b>資料備份</b><p class="muted">資料只保存在目前瀏覽器。可匯出後自行保存。</p>
+<button class="soft" onclick="exportData()">匯出 JSON</button>
+</div>
 </section>
 </main>
 
@@ -56,100 +83,113 @@ button{border:0;border-radius:10px;padding:10px 13px;font-weight:700}.blue{backg
 <button onclick="go('analysis',this)">◔<br>分析</button>
 </nav>
 
-<div id="modal" class="modal" style="display:none"><div class="sheet"><div class="row"><b id="mt">新增</b><button class="soft" onclick="closeM()">關閉</button></div><div id="form"></div></div></div>
+<div id="modal" class="modal" style="display:none"><div class="sheet">
+<div class="row"><b id="mt">新增</b><button class="soft" onclick="closeM()">關閉</button></div>
+<div id="form"></div></div></div>
 
 <script>
-const K='myasset';
+const K='myasset_v3';
+let fx={USD_TWD:32};
 let db=JSON.parse(localStorage.getItem(K)||'null')||{h:[],d:[],a:[{name:'現金',value:0}],b:[],target:15000000,spend:600000};
-if(!Array.isArray(db.h))db.h=[]; if(!Array.isArray(db.d))db.d=[]; if(!Array.isArray(db.a))db.a=[]; if(!Array.isArray(db.b))db.b=[];
+if(!Array.isArray(db.h))db.h=[];
+if(!Array.isArray(db.d))db.d=[];
+if(!Array.isArray(db.a))db.a=[];
+if(!Array.isArray(db.b))db.b=[];
+db.h.forEach(x=>{if(!x.currency)x.currency='TWD'});
+
 const M=x=>'NT$'+Math.round(+x||0).toLocaleString('zh-TW');
+const U=x=>'US$'+(+x||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function calc(){let s=db.h.reduce((a,x)=>a+(+x.shares||0)*(+x.price||0),0),c=db.h.reduce((a,x)=>a+(+x.shares||0)*(+x.cost||0),0),a=db.a.reduce((a,x)=>a+(+x.value||0),0),b=db.b.reduce((a,x)=>a+(+x.value||0),0);return{s,c,a,b,total:s+a,net:s+a-b,p:s-c}}
+const twd=(x,c='TWD')=>(+x||0)*(c==='USD'?(+fx.USD_TWD||32):1);
+const norm=x=>String(x||'').trim().toUpperCase();
+
+function calc(){
+ let s=db.h.reduce((a,x)=>a+twd((+x.shares||0)*(+x.price||0),x.currency),0);
+ let c=db.h.reduce((a,x)=>a+twd((+x.shares||0)*(+x.cost||0),x.currency),0);
+ let a=db.a.reduce((a,x)=>a+(+x.value||0),0), b=db.b.reduce((a,x)=>a+(+x.value||0),0);
+ return{s,c,a,b,total:s+a,net:s+a-b,p:s-c};
+}
 function save(){localStorage.setItem(K,JSON.stringify(db));render()}
 function go(id,b){document.querySelectorAll('.page').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on')}
 function render(){
- let c=calc(),y=new Date().getFullYear(),d=db.d.filter(x=>(x.date||'').startsWith(y)).reduce((a,x)=>a+(+x.amount||0),0),pct=c.total?c.s/c.total*100:0;
- net.textContent=M(c.net);sub.textContent=`總資產 ${M(c.total)}　負債 ${M(c.b)}`;sv.textContent=M(c.s);
- pnl.textContent=(c.p>=0?'+':'-')+M(Math.abs(c.p));dy.textContent=M(d);fi.textContent=Math.min(100,c.net/db.target*100).toFixed(1)+'%';
- target.value=db.target;spend.value=db.spend;mix.textContent='股票 '+pct.toFixed(1)+'%';
- bar.innerHTML='<div style="height:9px;background:#e5e7eb;border-radius:9px;overflow:hidden"><i style="display:block;height:100%;width:'+Math.min(100,pct)+'%;background:#2563eb"></i></div>';
- hold.innerHTML=db.h.length?db.h.map((x,i)=>{let v=(+x.shares||0)*(+x.price||0),p=(+x.shares||0)*((+x.price||0)-(+x.cost||0));return `<div class=item><div class=row><div><b>${esc(x.code)} ${esc(x.name)}</b><div class=muted>${x.shares}股｜成本 ${M(x.cost)}</div></div><b>${M(v)}</b></div><div class=row><span class=${p>=0?'pos':'neg'}>${p>=0?'+':'-'}${M(Math.abs(p))}</span><span class=muted>現價 ${x.price||0}${x.updated?'｜'+x.updated:''}</span></div><button class="soft smallbtn" onclick="price(${i})">手動價格</button> <button class="blue smallbtn" onclick="syncOne(${i})">同步</button> <button class="red smallbtn" onclick="del('h',${i})">刪除</button></div>`}).join(''):'<div class=empty>尚無持股</div>';
- dlist.innerHTML=db.d.length?db.d.slice().reverse().map(x=>`<div class=item><div class=row><b>${esc(x.code)} ${esc(x.name)}</b><b class=pos>+${M(x.amount)}</b></div><span class=muted>${x.date||''}｜每股 ${x.ps||0}｜股數 ${x.shares||0}${x.auto?'｜自動同步':''}</span></div>`).join(''):'<div class=empty>尚無股息</div>';
+ let c=calc(), y=new Date().getFullYear(), d=db.d.filter(x=>(x.date||'').startsWith(y)).reduce((a,x)=>a+twd(+x.amount||0,x.currency||'TWD'),0);
+ let pct=c.total?c.s/c.total*100:0;
+ net.textContent=M(c.net); sub.textContent=`總資產 ${M(c.total)}　負債 ${M(c.b)}`;
+ sv.textContent=M(c.s); pnl.textContent=(c.p>=0?'+':'-')+M(Math.abs(c.p)); dy.textContent=M(d);
+ fi.textContent=Math.min(100,db.target?c.net/db.target*100:0).toFixed(1)+'%';
+ target.value=db.target; spend.value=db.spend; mix.textContent='股票 '+pct.toFixed(1)+'%';
+ bar.innerHTML='<div class=bar><i style="width:'+Math.min(100,pct)+'%"></i></div>';
+ count.textContent=`共 ${db.h.length} 筆持股`;
+ fxbadge.textContent='USD/TWD '+(+fx.USD_TWD||32).toFixed(3);
+ hold.innerHTML=db.h.length?db.h.map((x,i)=>{
+   let v=twd((+x.shares||0)*(+x.price||0),x.currency), p=twd((+x.shares||0)*((+x.price||0)-(+x.cost||0)),x.currency);
+   return `<div class=item><div class=row><div><b>${esc(x.code)} ${esc(x.name)}</b><div class=muted>${x.shares}股｜成本 ${x.currency==='USD'?U(x.cost):M(x.cost)}</div></div><b>${M(v)}</b></div>
+   <div class=row><span class=${p>=0?'pos':'neg'}>${p>=0?'+':'-'}${M(Math.abs(p))}</span><span class=muted>現價 ${x.currency==='USD'?U(x.price):M(x.price)}</span></div>
+   <div style="margin-top:7px"><button class="soft small" onclick="price(${i})">價格</button> <button class="red small" onclick="del('h',${i})">刪除</button></div></div>`
+ }).join(''):'<div class=empty>尚無持股，請匯入你的庫存 JSON。</div>';
+ dlist.innerHTML=db.d.length?db.d.slice().reverse().map(x=>`<div class=item><div class=row><b>${esc(x.code)} ${esc(x.name)}</b><b class=pos>+${x.currency==='USD'?U(x.amount):M(x.amount)}</b></div><span class=muted>${x.date||''}｜每股 ${x.ps||0}｜股數 ${x.shares||0}${x.auto?'｜自動同步':''}</span></div>`).join(''):'<div class=empty>尚無股息</div>';
  alist.innerHTML=db.a.map((x,i)=>`<div class=item><div class=row><b>${esc(x.name)}</b><b>${M(x.value)}</b></div><button class=red onclick="del('a',${i})">刪除</button></div>`).join('')||'<div class=empty>尚無其他資產</div>';
  blist.innerHTML=db.b.map((x,i)=>`<div class=item><div class=row><b>${esc(x.name)}</b><b>${M(x.value)}</b></div><button class=red onclick="del('b',${i})">刪除</button></div>`).join('')||'<div class=empty>尚無負債</div>';
- ana.innerHTML=`<p>股票曝險：<b>${pct.toFixed(1)}%</b></p><p>負債比：<b>${(c.total?c.b/c.total*100:0).toFixed(1)}%</b></p><p>距離 FI：<b>${M(Math.max(db.target-c.net,0))}</b></p><p>目前年支出設定：<b>${M(db.spend)}</b></p>`;
+ ana.innerHTML=`<p>股票曝險：<b>${pct.toFixed(1)}%</b></p><p>負債比：<b>${(c.total?c.b/c.total*100:0).toFixed(1)}%</b></p><p>距離 FI：<b>${M(Math.max(db.target-c.net,0))}</b></p><p>目前年支出：<b>${M(db.spend)}</b></p><p>USD/TWD：<b>${(+fx.USD_TWD||32).toFixed(3)}</b></p>`;
 }
-function show(t,f){modal.style.display='block';mt.textContent=t;form.innerHTML=f}function closeM(){modal.style.display='none'}
-function openH(){show('新增持股',`<label>台股代號<input id=x1 placeholder="例如 0050、2330、00631L"></label><label>名稱<input id=x2 placeholder="可自行填寫"></label><label>股數<input id=x3 type=number></label><label>平均成本<input id=x4 type=number step=0.01></label><label>目前價格<input id=x5 type=number step=0.01 placeholder="可先留空，之後同步"></label><button class=blue onclick=addH()>儲存</button>`)}
-function openD(){show('新增股息',`<label>代號<input id=x1></label><label>名稱<input id=x2></label><label>日期<input id=x3 type=date></label><label>股息金額<input id=x4 type=number step=0.01></label><label>股數<input id=x5 type=number></label><label>每股股息<input id=x6 type=number step=0.0001></label><button class=blue onclick=addD()>儲存</button>`)}
-function openA(){show('新增資產',`<label>名稱<input id=x1></label><label>金額<input id=x2 type=number></label><button class=blue onclick=addA()>儲存</button>`)}
-function openB(){show('新增負債',`<label>名稱<input id=x1></label><label>餘額<input id=x2 type=number></label><button class=blue onclick=addB()>儲存</button>`)}
-function addH(){let code=x1.value.trim().toUpperCase();if(!code)return alert('請輸入代號');db.h.push({code,name:x2.value.trim(),shares:+x3.value||0,cost:+x4.value||0,price:+x5.value||0});closeM();save()}
-function addD(){db.d.push({code:x1.value.trim().toUpperCase(),name:x2.value.trim(),date:x3.value,amount:+x4.value||0,shares:+x5.value||0,ps:+x6.value||0});closeM();save()}
-function addA(){db.a.push({name:x1.value,value:+x2.value||0});closeM();save()}function addB(){db.b.push({name:x1.value,value:+x2.value||0});closeM();save()}
+function show(t,f){modal.style.display='block';mt.textContent=t;form.innerHTML=f}
+function closeM(){modal.style.display='none'}
+function openD(){show('新增股息',`<label>代號<input id=x1></label><label>名稱<input id=x2></label><label>幣別<select id=x3><option>TWD</option><option>USD</option></select></label><label>日期<input id=x4 type=date></label><label>股息金額<input id=x5 type=number step=0.01></label><label>股數<input id=x6 type=number></label><label>每股股息<input id=x7 type=number step=0.0001></label><button class=blue onclick=addD()>儲存</button>`)}
+function openA(){show('新增資產',`<label>名稱<input id=x1></label><label>金額（TWD）<input id=x2 type=number></label><button class=blue onclick=addA()>儲存</button>`)}
+function openB(){show('新增負債',`<label>名稱<input id=x1></label><label>餘額（TWD）<input id=x2 type=number></label><button class=blue onclick=addB()>儲存</button>`)}
+function addD(){db.d.push({code:norm(x1.value),name:x2.value.trim(),currency:x3.value,date:x4.value,amount:+x5.value||0,shares:+x6.value||0,ps:+x7.value||0});closeM();save()}
+function addA(){db.a.push({name:x1.value,value:+x2.value||0});closeM();save()}
+function addB(){db.b.push({name:x1.value,value:+x2.value||0});closeM();save()}
 function del(k,i){db[k].splice(i,1);save()}
-function price(i){let v=prompt('輸入目前價格',db.h[i].price||0);if(v!==null&&!isNaN(v)){db.h[i].price=+v;db.h[i].updated='手動';save()}}
+function price(i){let v=prompt('輸入目前價格（原幣別）',db.h[i].price||0);if(v!==null&&!isNaN(v)){db.h[i].price=+v;db.h[i].updated='手動';save()}}
 function saveFI(){db.target=+target.value||15000000;db.spend=+spend.value||600000;save();alert('已儲存')}
-function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='我的資產備份.json';a.click()}
+function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({...db,fx},null,2)],{type:'application/json'}));a.download='我的資產V3備份.json';a.click()}
 
-async function getTWSE(){
- const r=await fetch('./market.json?ts='+Date.now(),{cache:'no-store'});
- if(!r.ok)throw new Error('網站行情資料尚未更新');
- return await r.json();
+function importHoldings(file){
+ if(!file)return;
+ let r=new FileReader();
+ r.onload=()=>{
+  try{
+   let obj=JSON.parse(r.result), hs=obj.holdings||obj.h;
+   if(!Array.isArray(hs)||!hs.length)throw new Error('找不到 holdings');
+   let n=0;
+   hs.forEach(h=>{
+    let code=norm(h.code||h.Code); if(!code)return;
+    let item={code,name:String(h.name||''),shares:+h.shares||0,cost:+(h.cost??h.cost_per_share)||0,price:+(h.price??h.current_price)||0,currency:String(h.currency||'TWD').toUpperCase()};
+    let old=db.h.find(x=>norm(x.code)===code);
+    if(old)Object.assign(old,item);else{db.h.push(item);n++}
+   });
+   save(); alert(`匯入完成：新增 ${n} 筆，目前共 ${db.h.length} 筆持股`);
+  }catch(e){alert('匯入失敗：'+e.message)}
+ };
+ r.readAsText(file,'utf-8');
 }
-async function getDividends(){
- const r=await fetch('./dividends.json?ts='+Date.now(),{cache:'no-store'});
- if(!r.ok)throw new Error('網站股利資料尚未更新');
- return await r.json();
-}
-function normalizeCode(x){return String(x||'').trim().toUpperCase()}
-async function syncOne(i){
- const h=db.h[i]; if(!h)return;
- syncStatus.textContent='正在讀取 '+h.code+' 最新資料…';
- try{
-   const rows=await getTWSE();
-   const row=rows.find(r=>normalizeCode(r.Code||r['證券代號'])===normalizeCode(h.code));
-   if(!row)throw new Error('找不到上市代號；目前先支援上市股票/ETF');
-   const p=parseFloat(String(row.ClosingPrice??row['收盤價']??'').replace(/,/g,''));
-   if(!isFinite(p)||p<=0)throw new Error('目前沒有有效收盤價');
-   h.price=p;h.name=h.name||row.Name||row['證券名稱']||'';h.updated='自動 '+new Date().toLocaleString('zh-TW');
-   save();syncStatus.textContent=h.code+' 已更新：'+p;
- }catch(e){syncStatus.textContent='同步失敗：'+e.message}
+
+async function getJSON(name){
+ const r=await fetch('./'+name+'?ts='+Date.now(),{cache:'no-store'});
+ if(!r.ok)throw new Error(name+' 尚未更新');
+ return r.json();
 }
 async function syncAll(){
- if(!db.h.length){alert('請先到「投資」新增至少一檔台股。');return}
- syncStatus.textContent='正在讀取最新行情與股利…';
+ if(!db.h.length){alert('請先匯入持股');return}
+ syncStatus.textContent='正在同步台股、美股、匯率與股利…';
  try{
-   const [rows,divs]=await Promise.all([getTWSE(),getDividends()]);
-   let updated=0,divUpdated=0;
-   const map=new Map(rows.map(r=>[normalizeCode(r.Code||r['證券代號']),r]));
-   for(const h of db.h){
-     const row=map.get(normalizeCode(h.code));
-     if(row){
-       const p=parseFloat(String(row.ClosingPrice??row['收盤價']??'').replace(/,/g,''));
-       if(isFinite(p)&&p>0){h.price=p;h.name=h.name||row.Name||row['證券名稱']||'';h.updated='自動 '+new Date().toLocaleString('zh-TW');updated++}
-     }
-     const mine=divs.filter(d=>normalizeCode(d['公司代號'])===normalizeCode(h.code));
-     if(mine.length){
-       mine.sort((a,b)=>String(b['股利年度']||'').localeCompare(String(a['股利年度']||'')));
-       const d=mine.find(x=>parseFloat(x['股東配發-盈餘分配之現金股利(元/股)']||0)+parseFloat(x['股東配發-資本公積發放之現金(元/股)']||0)>0);
-       if(d){
-         const ps=parseFloat(d['股東配發-盈餘分配之現金股利(元/股)']||0)+parseFloat(d['股東配發-資本公積發放之現金(元/股)']||0);
-         const amount=(+h.shares||0)*ps;
-         const year=String(d['股利年度']||'');
-         const key=h.code+'-'+year+'-'+ps;
-         if(amount>0 && !db.d.some(x=>x.autoKey===key)){
-           db.d.push({code:h.code,name:h.name,date:new Date().toISOString().slice(0,10),amount,shares:+h.shares||0,ps,auto:true,autoKey:key});
-           divUpdated++;
-         }
-       }
-     }
+  const [tw,us,rate,divs]=await Promise.all([getJSON('market.json'),getJSON('us_market.json'),getJSON('fx.json'),getJSON('dividends.json')]);
+  fx.USD_TWD=+rate.USD_TWD||fx.USD_TWD;
+  const twm=new Map((tw||[]).map(r=>[norm(r.Code||r['證券代號']),r]));
+  const usm=new Map((us||[]).map(r=>[norm(r.symbol),r]));
+  let updated=0;
+  db.h.forEach(h=>{
+   let row=(h.currency==='USD'?usm:twm).get(norm(h.code));
+   if(row){
+    let p=parseFloat(String(h.currency==='USD'?(row.price??row.regularMarketPrice):(row.ClosingPrice??row['收盤價'])??'').replace(/,/g,''));
+    if(isFinite(p)&&p>0){h.price=p;h.updated='自動 '+new Date().toLocaleString('zh-TW');updated++}
    }
-   localStorage.setItem(K,JSON.stringify(db));render();
-   syncStatus.textContent=`完成：股價 ${updated} 檔｜股利 ${divUpdated} 筆`;
+  });
+  localStorage.setItem(K,JSON.stringify(db));render();
+  syncStatus.textContent=`完成：${updated} 檔行情｜USD/TWD ${fx.USD_TWD.toFixed(3)}`;
  }catch(e){syncStatus.textContent='同步失敗：'+e.message}
 }
-
 render();
 </script>
 </body>
