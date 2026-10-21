@@ -1,46 +1,46 @@
 [
   {
     "symbol": "AAPL",
-    "price": 344.895
+    "price": 343.99
   },
   {
     "symbol": "VOO",
-    "price": 711.74
+    "price": 710.72
   },
   {
     "symbol": "TSM",
-    "price": 431.41
+    "price": 431.89
   },
   {
     "symbol": "UUUU",
-    "price": 8.26
+    "price": 8.2
   },
   {
     "symbol": "NTSD",
-    "price": 47.5
+    "price": 47.458
   },
   {
     "symbol": "TSLA",
-    "price": 387.035
+    "price": 386.47
   },
   {
     "symbol": "VTI",
-    "price": 379.85
+    "price": 379.15
   },
   {
     "symbol": "VT",
-    "price": 158.805
+    "price": 158.59
   },
   {
     "symbol": "NVDA",
-    "price": 221.71
+    "price": 221.97
   },
   {
     "symbol": "SPY",
-    "price": 774.335
+    "price": 773.09
   },
   {
     "symbol": "GOOGL",
-    "price": 334.995
+    "price": 334.76
   }
 ]
